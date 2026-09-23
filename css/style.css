@@ -1,0 +1,951 @@
+/* ============================================
+   FERMENTOU — Portfolio site
+   ============================================ */
+
+:root {
+  /* Paleta oficial Fermentou, em ordem de predominância */
+  --preto: #292929;      /* 1 — dominante */
+  --terracota: #5e0000;      /* 2 — vinho/bordô, cor de destaque */
+  --areia: #aa9f87;      /* 3 — bege acinzentado */
+  --creme: #fef3dc;      /* 4 — creme claro */
+
+  --terracota-escuro: #430000;
+  --cinza-escuro: #292929;
+  --verde-claro: var(--areia);
+  --branco: #fef3dc;
+  --branco-puro: #ffffff;
+  --preto-rgb: 41, 41, 41; /* mesmo tom do --preto, em RGB (necessário para usar com opacidade) */
+  --fonte-titulo: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
+  --fonte-corpo: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
+  --espaco-secao: clamp(3rem, 8vw, 7rem);
+
+  /* ---- Campos de ajuste rápido ---- */
+  --footer-logo-espaco: 1rem;               /* distância entre o logo e os ícones sociais no rodapé */
+  --nome-trabalho-cor: var(--branco-puro);    /* cor do nome do trabalho (parallax) */
+  --nome-trabalho-sombra:                     /* densidade da sombra do nome do trabalho */
+    0 2px 6px rgba(0, 0, 0, 0.85),
+    0 4px 18px rgba(0, 0, 0, 0.75),
+    0 0 40px rgba(0, 0, 0, 0.5);
+  --header-fundo-opacidade: 0.9;             /* fundo escuro atrás do logo ao rolar: 0 = totalmente transparente, 1 = totalmente sólido (hoje: ~95% transparente) */
+  --marca-texto-altura-extra: 6px;            /* quanto o glifo do marca-texto cresce para cima e para baixo, além da altura padrão */
+  --cta-cor-fundo: var(--terracota);          /* cor de fundo do CTA "Vamos fazer um diagnóstico?" na Home */
+  --header-padding-vertical: 1.5rem;          /* altura "normal" do header (topo/base) */
+  --header-escala-compacta: 0.7;              /* para quanto o header encolhe ao rolar (0.7 = 70% do tamanho original) */
+  --trabalho-altura: 100vh;                   /* altura de cada imagem de trabalho em telas grandes */
+  --trabalho-altura-tablet: 85vh;             /* altura em telas médias (até 900px) */
+  --trabalho-altura-mobile: 60vh;             /* altura em telas pequenas (até 560px) — reduz o corte da imagem */
+  --whatsapp-flutuante-cor: #25d366;          /* cor do botão flutuante de WhatsApp (hoje: verde padrão do WhatsApp) */
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fonte-corpo);
+  color: var(--preto);
+  background: var(--creme);
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 3rem);
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--header-padding-vertical) clamp(1.25rem, 4vw, 3rem);
+  color: var(--branco);
+  background-color: transparent;
+  transition: background-color 0.4s ease, padding 0.35s ease;
+}
+
+/* Header "compacto": reduz a altura gradualmente ao rolar a página,
+   em todas as páginas. Proporção controlada por --header-escala-compacta
+   no topo do CSS (hoje 0.7 = encolhe para 70% do tamanho original). */
+.site-header.is-compacto {
+  padding: calc(var(--header-padding-vertical) * var(--header-escala-compacta)) clamp(1.25rem, 4vw, 3rem);
+}
+
+.site-header .logo,
+.site-header .contact-icon,
+.site-header .menu-toggle {
+  transition: transform 0.35s ease;
+}
+
+.site-header.is-compacto .logo,
+.site-header.is-compacto .contact-icon,
+.site-header.is-compacto .menu-toggle {
+  transform: scale(var(--header-escala-compacta));
+}
+
+/* Fundo sólido fixo — usado nas páginas internas (sem vídeo por trás) */
+.site-header.is-solid {
+  background-color: var(--preto);
+}
+
+/* Fundo com fade e transparência ajustável — usado na Home, quando a
+   rolagem passa da seção de vídeo para as seções seguintes */
+.site-header.is-scrolled {
+  background-color: rgba(var(--preto-rgb), var(--header-fundo-opacidade));
+}
+
+.logo {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 1.1rem;
+  line-height: 0.95;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.logo a { color: inherit; }
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: var(--branco);
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-toggle span {
+  width: 26px;
+  height: 2px;
+  background: currentColor;
+  display: block;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.contact-icon {
+  color: var(--branco);
+}
+.contact-icon svg { width: 22px; height: 22px; }
+
+/* Fundo desfocado — cobre a tela inteira (inclusive a metade que fica
+   à direita do menu) enquanto o menu está aberto */
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  background: rgba(41, 41, 41, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.nav-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Menu lateral — ocupa metade da tela e desliza a partir da esquerda,
+   ficando sólido por cima do fundo desfocado */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(50vw, 480px);
+  background: var(--preto);
+  color: var(--creme);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-100%);
+  transition: transform 0.35s ease;
+  box-shadow: 8px 0 30px rgba(0, 0, 0, 0.35);
+}
+
+.nav-overlay.is-open {
+  transform: translateX(0);
+}
+
+.nav-overlay ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.nav-overlay li {
+  margin: 1.2rem 0;
+}
+
+.nav-overlay a {
+  font-family: var(--fonte-titulo);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  transition: color 0.2s ease;
+}
+
+.nav-overlay a:hover,
+.nav-overlay a:focus-visible {
+  color: var(--areia);
+}
+
+.nav-overlay a.is-active {
+  color: var(--terracota);
+}
+
+.nav-overlay a.is-active:hover {
+  color: var(--areia);
+}
+
+@media (max-width: 640px) {
+  .nav-overlay { width: 78vw; }
+}
+
+/* ---------- Hero / video section ---------- */
+
+.hero-video {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0c0c0c 0%, var(--preto) 55%, var(--areia) 100%);
+}
+
+.hero-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+}
+
+.hero-video__placeholder-note {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.6);
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  font-size: 1rem;
+}
+
+.hero-video__logos {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.5rem, 5vw, 4rem) clamp(1.5rem, 6vw, 5rem);
+  align-items: center;
+  padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem);
+  opacity: 0.35;
+}
+
+.hero-video__logos img {
+  filter: grayscale(1) brightness(2);
+  margin: 0 auto;
+}
+
+/* ---------- Trabalhos / overlapping parallax images ---------- */
+
+.trabalhos {
+  position: relative;
+  background: var(--preto);
+}
+
+.trabalho-item {
+  position: sticky;
+  top: 0;
+  height: var(--trabalho-altura);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Em telas menores a imagem cortava muita informação (container muito
+   alto/estreito); reduzimos a altura para cortar menos. Ajuste os
+   valores de --trabalho-altura-tablet/--trabalho-altura-mobile no
+   topo do CSS (dentro de :root) conforme quiser. */
+@media (max-width: 900px) {
+  .trabalho-item { height: var(--trabalho-altura-tablet); }
+}
+
+@media (max-width: 560px) {
+  .trabalho-item { height: var(--trabalho-altura-mobile); }
+}
+
+/* ---------- Off-canvas de detalhes do trabalho ---------- */
+
+.work-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 198;
+  background: rgba(41, 41, 41, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.work-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.work-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(55vw, 560px);
+  background: var(--preto);
+  color: var(--creme);
+  z-index: 199;
+  transform: translateX(-100%);
+  transition: transform 0.35s ease;
+  box-shadow: 8px 0 30px rgba(0, 0, 0, 0.35);
+  overflow-y: auto;
+  padding: clamp(3.5rem, 7vw, 4.5rem) clamp(1.5rem, 4vw, 2.5rem) 3rem;
+}
+
+.work-drawer.is-open {
+  transform: translateX(0);
+}
+
+.work-drawer__fechar {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  color: var(--creme);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.work-drawer__titulo {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 0 0 2rem;
+}
+
+.work-drawer__bloco {
+  margin-bottom: 2.5rem;
+}
+
+.work-drawer__bloco:last-child {
+  margin-bottom: 0;
+}
+
+.work-drawer__imagem {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  background: #3a3733;
+  margin-bottom: 1rem;
+}
+
+.work-drawer__texto {
+  line-height: 1.6;
+  color: var(--areia);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .work-drawer { width: 86vw; }
+}
+
+.trabalho-item__frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  will-change: transform, opacity;
+}
+
+.trabalho-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trabalho-item__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #3a3733;
+  color: rgba(244, 236, 216, 0.5);
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: clamp(2rem, 6vw, 4rem);
+}
+
+.trabalho-item__nome {
+  position: absolute;
+  top: 50%;
+  right: clamp(1.5rem, 6vw, 5rem);
+  transform: translateY(calc(-50% + 90px));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  text-align: right;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.trabalho-item__nome-titulo {
+  color: var(--nome-trabalho-cor);
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  letter-spacing: 0.02em;
+  text-shadow: var(--nome-trabalho-sombra);
+}
+
+.trabalho-item__nome-desc {
+  display: block;
+  max-width: 32ch;
+  color: var(--areia);
+  font-family: var(--fonte-corpo);
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  line-height: 1.5;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+/* Deixe o texto vazio no HTML (data-vazio) para omitir a descrição —
+   ela some sozinha, sem precisar remover a tag nem mexer no CSS */
+.trabalho-item__nome-desc:empty {
+  display: none;
+}
+
+/* ---------- CTA "Vamos fazer um diagnóstico?" ---------- */
+
+.cta-diagnostico {
+  /* cor de fundo do CTA — troque aqui ou na variável --cta-cor-fundo no :root */
+  background: var(--cta-cor-fundo);
+  padding: clamp(2rem, 5vw, 3rem) 0;
+}
+
+.cta-diagnostico__conteudo {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.cta-diagnostico__texto {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  color: var(--creme);
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+}
+
+.cta-diagnostico__form {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cta-diagnostico__form input[type="email"] {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 0.75rem 1.1rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--creme);
+  color: var(--preto);
+  font-family: var(--fonte-corpo);
+  font-size: 0.95rem;
+}
+
+.cta-diagnostico__form button {
+  flex: 0 0 auto;
+  padding: 0.75rem 1.6rem;
+  border-radius: 999px;
+  /* botão do CTA: fundo bege da marca, texto vermelho em negrito */
+  background: var(--areia);
+  color: var(--terracota);
+  border: none;
+  font-family: var(--fonte-corpo);
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cta-diagnostico__form button:hover {
+  background: var(--creme);
+  color: var(--terracota);
+}
+
+/* Em telas estreitas, quebra em duas linhas (texto em cima, form embaixo)
+   para não espremer demais o conteúdo */
+@media (max-width: 720px) {
+  .cta-diagnostico__conteudo {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+  .cta-diagnostico__texto {
+    white-space: normal;
+    flex-basis: 100%;
+  }
+  .cta-diagnostico__form {
+    flex-basis: 100%;
+  }
+}
+
+/* utilitário: esconde visualmente mas mantém acessível para leitor de tela */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Clientes ---------- */
+
+.clientes {
+  background: var(--verde-claro);
+  padding: var(--espaco-secao) 0;
+  text-align: center;
+}
+
+.clientes__grid {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3rem;
+  margin: 0 auto 3rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem clamp(1.25rem, 4vw, 3rem) 1.25rem;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.clientes__grid.cabe-tudo {
+  justify-content: center;
+}
+
+.clientes__grid::-webkit-scrollbar {
+  height: 6px;
+}
+.clientes__grid::-webkit-scrollbar-thumb {
+  background: var(--terracota);
+  border-radius: 999px;
+}
+.clientes__grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.clientes__grid img,
+.clientes__grid .logo-placeholder {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.clientes__grid img {
+  margin: 0;
+  max-height: 70px;
+  filter: grayscale(1);
+}
+
+.logo-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  min-height: 32px;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--preto);
+  opacity: 0.45;
+  text-align: center;
+}
+
+.hero-video__logos .logo-placeholder {
+  color: var(--creme);
+}
+
+.clientes__icone {
+  width: 40px;
+  margin: 0 auto 1rem;
+}
+
+.clientes__texto {
+  max-width: 30ch;
+  margin: 0 auto 1.5rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.clientes__social {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.clientes__social a {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--preto);
+  color: var(--branco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.clientes__social svg { width: 16px; height: 16px; }
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  background: var(--preto);
+  color: var(--creme);
+  padding: 2.5rem clamp(1.25rem, 4vw, 3rem);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.footer-logo {
+  /* Distância entre o logo e os ícones de rede social abaixo dele.
+     Ajuste este valor conforme quiser mais ou menos espaço. */
+  margin-bottom: var(--footer-logo-espaco, 2.5rem);
+}
+
+.footer-logo a {
+  display: inline-block;
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 0.95;
+  color: var(--creme);
+  letter-spacing: 0.02em;
+}
+
+.footer-logo img { margin: 0 auto; }
+
+/* ---------- Páginas internas (Sobre / Contato / Trabalhos) ---------- */
+
+.pagina-interna {
+  padding: clamp(7rem, 14vw, 10rem) 0 var(--espaco-secao);
+}
+
+.pagina-interna h1 {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  margin-bottom: 1.5rem;
+  color: var(--terracota);
+}
+
+.pagina-interna p {
+  max-width: 60ch;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* ---------- Serviços ---------- */
+
+.servicos-lista {
+  list-style: none;
+  margin: 3rem 0 0;
+  padding: 0;
+  max-width: 70ch;
+}
+
+.servico {
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(41, 41, 41, 0.15);
+}
+
+.servico:first-child {
+  padding-top: 0;
+}
+
+.servico__titulo {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 1.7vw, 2.2rem);
+  margin: 0 0 0.6rem;
+}
+
+.servico__texto {
+  margin: 0;
+  color: #333;
+  line-height: 1.6;
+  max-width: 55ch;
+}
+
+/* Efeito de "marca-texto": um glifo preto (cor da marca) que preenche
+   por trás do título conforme ele entra na tela ao rolar a página — a
+   fonte muda para a cor de fundo da página à medida que o glifo avança */
+.marca-texto {
+  position: relative;
+  display: inline;
+  color: var(--preto);
+  transition: color 0.3s ease 0.3s;
+}
+
+.marca-texto::before {
+  content: "";
+  position: absolute;
+  left: -0.15em;
+  right: -0.15em;
+  top: calc(8% - var(--marca-texto-altura-extra));
+  bottom: calc(4% - var(--marca-texto-altura-extra));
+  background: var(--preto);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.6s ease;
+}
+
+.marca-texto.is-marcado {
+  color: var(--creme);
+}
+
+.marca-texto.is-marcado::before {
+  transform: scaleX(1);
+}
+
+/* Contato form */
+
+.form-contato {
+  max-width: 520px;
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.form-contato label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.form-contato input,
+.form-contato textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  background: var(--branco);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.form-contato button {
+  justify-self: start;
+  background: var(--terracota);
+  color: var(--branco);
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-contato button:hover { background: var(--terracota-escuro); }
+
+.form-contato-aviso {
+  max-width: 520px;
+  margin-top: 2rem;
+  padding: 1rem 1.2rem;
+  background: var(--areia);
+  color: var(--preto);
+  font-size: 0.95rem;
+}
+
+.contato__links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.contato__links a {
+  border: 1px solid var(--preto);
+  border-radius: 999px;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+}
+
+/* Grid de trabalhos (página Trabalhos) */
+
+.trabalhos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.trabalhos-grid__item {
+  aspect-ratio: 4/3;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  overflow: hidden;
+}
+.trabalhos-grid__item img { width: 100%; height: 100%; object-fit: cover; }
+
+@media (min-width: 640px) {
+  .trabalhos-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .clientes__grid { gap: 2rem; }
+}
+
+/* ---------- Botão flutuante do WhatsApp ---------- */
+
+.whatsapp-flutuante {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--whatsapp-flutuante-cor);
+  color: var(--branco-puro);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  z-index: 150;
+  transition: transform 0.2s ease;
+}
+
+.whatsapp-flutuante svg {
+  width: 28px;
+  height: 28px;
+}
+
+.whatsapp-flutuante:hover {
+  transform: scale(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .trabalho-item__frame { transition: none !important; }
+}
+
+/* ---------- Cursor trailer ---------- */
+
+.cursor-trailer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: var(--terracota);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 300;
+  opacity: 0;
+  transition: opacity 0.2s ease, width 0.15s ease, height 0.15s ease;
+  will-change: transform;
+}
+
+.cursor-trailer.is-active {
+  opacity: 1;
+}
+
+.cursor-trailer.is-bursting {
+  opacity: 0 !important;
+}
+
+/* ---------- Efeito de "explosão" ao passar sobre links/botões ---------- */
+
+.cursor-burst {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 301;
+}
+
+.cursor-burst__eixo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.cursor-burst__linha {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 2px;
+  height: 9px;
+  background: var(--terracota);
+  transform-origin: center top;
+  animation: cursor-burst-anim 0.45s ease-out forwards;
+}
+
+@keyframes cursor-burst-anim {
+  0% { transform: translateY(-2px) scaleY(0.5); opacity: 1; }
+  100% { transform: translateY(-20px) scaleY(1); opacity: 0; }
+}
