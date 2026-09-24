@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,800;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/png" href="images/logo-fav.png">
+<link rel="icon" type="image/png" href="images/logo-f.png">
 </head>
 <body>
 
@@ -103,16 +103,17 @@
   <div class="container cta-diagnostico__conteudo">
     <span class="cta-diagnostico__texto">Vamos fazer um diagnóstico?</span>
 
-    <form name="diagnostico" method="POST" data-netlify="true" class="cta-diagnostico__form">
-      <input type="hidden" name="form-name" value="diagnostico">
+    <form action="https://formsubmit.co/b506fd0d9becd67e48673a9bc6436c70" method="POST" class="cta-diagnostico__form">
+
+      <!-- Redireciona de volta para a Home -->
+      <input type="hidden" name="_next" value="https://fermentou.com.br/">
+
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_subject" value="Novo pedido de Diagnóstico - Home">
+      <input type="hidden" name="origem" value="CTA Diagnóstico - Home">
+
       <label for="cta-email" class="sr-only">E-mail</label>
-      <input
-        type="email"
-        id="cta-email"
-        name="email"
-        placeholder="Deixe seu e-mail aqui e envie para gente"
-        required
-      >
+      <input type="email" id="cta-email" name="email" placeholder="Deixe seu e-mail aqui e envie para gente" required>
       <button type="submit">Enviar</button>
     </form>
   </div>
