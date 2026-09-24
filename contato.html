@@ -36,47 +36,26 @@
     <h1>Contato</h1>
     <p>Preencha o formulário abaixo ou fale diretamente pelo WhatsApp ou redes sociais.</p>
 
-    <!--
-      ===============================================================
-      FORMULÁRIO DE CONTATO — pronto para o Netlify Forms por padrão.
-      ===============================================================
-      Onde ajustar:
+    <form action="fermentou@gmail.com" method="POST" class="form-contato">
 
-      1) SERVIDOR/SERVIÇO — atributo "action" do <form> logo abaixo.
-         - Netlify Forms (padrão atual): deixe "action" vazio/removido
-           e mantenha data-netlify="true". Não precisa de servidor
-           próprio, funciona assim que o site for publicado no Netlify.
-         - Outro serviço (ex.: Formspree, Web3Forms, backend próprio):
-           troque a linha do <form> por algo como:
-           <form name="contato" method="POST" action="https://SEU-SERVICO-AQUI">
-           e remova o data-netlify="true" (ele só vale pro Netlify).
+      <!-- Configurações Opcionais do FormSubmit -->
+      <!-- Redireciona para uma página de agradecimento própria (opcional) -->
+      <!-- <input type="hidden" name="_next" value="https://fermentou.com.br/obrigado.html"> -->
 
-      2) E-MAIL QUE RECEBE AS MENSAGENS
-         - Netlify Forms: não fica no código. Vá no painel do Netlify em
-           Site settings > Forms > Form notifications > Add notification
-           e cadastre o e-mail de destino por lá.
-         - Formspree: o e-mail já fica associado ao endpoint que a
-           própria Formspree te dá ao criar o formulário.
-         - Web3Forms ou serviços parecidos: normalmente pedem uma chave
-           (access key) associada ao seu e-mail — cole essa chave no
-           campo indicado abaixo (input hidden "chave-do-servico").
-      ===============================================================
-    -->
-    <form name="contato" method="POST" data-netlify="true" class="form-contato">
-      <input type="hidden" name="form-name" value="contato">
-      <!-- Alguns serviços (Web3Forms, etc.) pedem uma chave/token aqui.
-           Se o seu pedir, troque o "value" abaixo pela chave fornecida
-           e dê um "name" de acordo com a documentação do serviço.
-      <input type="hidden" name="chave-do-servico" value="COLE-AQUI-SE-NECESSARIO"> -->
+      <!-- Evita que o visitante tenha de preencher CAPTCHA (opcional) -->
+      <input type="hidden" name="_captcha" value="false">
+
+      <!-- Assunto do e-mail que você vai receber -->
+      <input type="hidden" name="Contato Site Fermentou" value="Novo contato pelo site - Fermentou">
 
       <div>
         <label for="nome">Nome</label>
-        <input type="text" id="nome" name="nome" required>
+        <input type="text" id="nome" name="nome" autocomplete="name" required>
       </div>
 
       <div>
         <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" autocomplete="email" required>
       </div>
 
       <div>
