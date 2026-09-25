@@ -32,9 +32,9 @@
   </ul>
 </nav>
 
-<!-- Os 10 trabalhos, com efeito parallax de revelação ao rolar -->
+<!-- Os 10 trabalhos com IDs nos itens para acionamento direto do modal via URL -->
 <section class="trabalhos" style="margin-top:0;">
-  <div class="trabalho-item" data-titulo="Trabalho 01" data-descricao="teste teste" data-midia-1="images/trabalho-01.jpg" data-midia-2="images/trabalho-01.jpg" data-midia-3="images/trabalho-01-3.jpg" data-midia-4="" data-midia-5="" data-midia-6="">
+  <div id="trabalho-01" class="trabalho-item" data-titulo="Trabalho 01" data-descricao="teste teste" data-midia-1="images/trabalho-01.jpg" data-midia-2="images/trabalho-01.jpg" data-midia-3="images/trabalho-01-3.jpg" data-midia-4="" data-midia-5="" data-midia-6="">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-01.jpg" alt="Trabalho 01" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 01'}))">
     </div>
@@ -43,7 +43,7 @@
       <span class="trabalho-item__nome-desc"></span>
     </div>
   </div>
-  <div class="trabalho-item" data-titulo="Trabalho 02" data-descricao="Texto de apresentação do projeto Trabalho 02 — edite este atributo (data-descricao no HTML) com a informação real." data-midia-1="images/trabalho-02.jpg" data-midia-2="images/trabalho-02-2.jpg" data-midia-3="images/trabalho-02-3.jpg" data-midia-4="" data-midia-5="" data-midia-6="">
+  <div id="trabalho-02" class="trabalho-item" data-titulo="Trabalho 02" data-descricao="Texto de apresentação do projeto Trabalho 02 — edite este atributo (data-descricao no HTML) com a informação real." data-midia-1="images/trabalho-02.jpg" data-midia-2="images/trabalho-02-2.jpg" data-midia-3="images/trabalho-02-3.jpg" data-midia-4="" data-midia-5="" data-midia-6="">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-02.jpg" alt="Trabalho 02" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 02'}))">
     </div>
@@ -52,7 +52,7 @@
       <span class="trabalho-item__nome-desc"></span>
     </div>
   </div>
-  <div class="trabalho-item" data-titulo="Trabalho 03" data-descricao="Texto de apresentação do projeto Trabalho 03 — edite este atributo (data-descricao no HTML) com a informação real." data-midia-1="images/trabalho-03-1.jpg" data-midia-2="images/trabalho-03-2.jpg" data-midia-3="images/trabalho-03-3.jpg" data-midia-4="" data-midia-5="" data-midia-6="">
+  <div id="trabalho-03" class="trabalho-item" data-titulo="Trabalho 03" data-descricao="Texto de apresentação do projeto Trabalho 03 — edite este atributo (data-descricao no HTML) com a informação real." data-midia-1="images/trabalho-03-1.jpg" data-midia-2="images/trabalho-03-2.jpg" data-midia-3="images/trabalho-03-3.jpg" data-midia-4="" data-midia-5="" data-midia-6="">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-03.jpg" alt="Trabalho 03" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 03'}))">
     </div>
@@ -61,12 +61,12 @@
       <span class="trabalho-item__nome-desc"></span>
     </div>
   </div>
-  <div class="trabalho-item" data-titulo="Trabalho 04" data-descricao="Texto de apresentação do projeto Trabalho 04 — edite este atributo (data-descricao no HTML) com a informação real." data-midia-1="images/trabalho-04-1.jpg" data-midia-2="images/trabalho-04-2.jpg" data-midia-3="images/trabalho-04-3.jpg" data-midia-4="" data-midia-5="" data-midia-6="">
+  <div class="trabalho-item" data-titulo="Barrel Aged - Hankzbier" data-descricao="Texto de apresentação do projeto Trabalho 04 — edite este atributo (data-descricao no HTML) com a informação real." data-midia-1="images/trabalho_4_1.png" data-midia-2="images/trabalho_4_2.mp4" data-midia-3="images/trabalho_4_3.png" data-midia-4="images/trabalho_4_4.png" data-midia-5="" data-midia-6="">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-04.jpg" alt="Trabalho 04" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 04'}))">
     </div>
     <div class="trabalho-item__nome">
-      <span class="trabalho-item__nome-titulo">Trabalho 04</span>
+      <span class="trabalho-item__nome-titulo">Uma Série</span>
       <span class="trabalho-item__nome-desc"></span>
     </div>
   </div>
@@ -212,10 +212,10 @@
     opacity:.85;
     margin:0 0 2.5rem;
   }
-.work-modal__galeria{
+  .work-modal__galeria{
     display: flex;
     flex-direction: column;
-    gap: 2rem; /* Aumentei um pouco o espaçamento para imagens maiores */
+    gap: 2rem;
   }
   .work-modal__galeria img,
   .work-modal__galeria video{
@@ -240,6 +240,18 @@
   var fecharBtn = modal.querySelector('.work-modal__fechar');
   var EXT_VIDEO = ['mp4'];
 
+  // OBSERVADOR: dá play quando 50% do vídeo entra na tela e pause quando sai
+  var videoObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var video = entry.target;
+      if (entry.isIntersecting) {
+        video.play().catch(function () {}); // Toca ao entrar no campo de visão
+      } else {
+        video.pause(); // Pausa ao sair do campo de visão
+      }
+    });
+  }, { threshold: 0.5 });
+
   function criarMidia(caminho) {
     var ext = caminho.split('.').pop().toLowerCase();
     var el;
@@ -247,8 +259,13 @@
       el = document.createElement('video');
       el.src = caminho;
       el.controls = true;
-      el.playsInline = true;
-      el.preload = 'metadata';
+      el.muted = true;          // Mudo para garantir autoplay nos navegadores
+      el.loop = true;           // Repetição contínua
+      el.playsInline = true;     // Execução inline em telemóveis
+      el.preload = 'auto';
+
+      // Conecta o vídeo ao observador de rolagem
+      videoObserver.observe(el);
     } else {
       el = document.createElement('img');
       el.src = caminho;
@@ -287,6 +304,17 @@
   fecharBtn.addEventListener('click', fecharModal);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && modal.classList.contains('is-aberto')) fecharModal();
+  });
+
+  // VERIFICA SE VEIO UM ID NA URL (EX: #trabalho-01) E DISPARA O MODAL AUTOMÁTICO
+  window.addEventListener('DOMContentLoaded', function () {
+    var hash = window.location.hash;
+    if (hash) {
+      var targetItem = document.querySelector(hash);
+      if (targetItem) {
+        abrirModal(targetItem);
+      }
+    }
   });
 })();
 </script>

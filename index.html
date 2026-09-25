@@ -34,30 +34,14 @@
 
 <!-- HERO / VÍDEO -->
 <section class="hero-video">
-  <!--
-    TODO: quando tiver o arquivo final, troque o <div class="hero-video__placeholder-note">
-    por este bloco e aponte o "src" para o arquivo dentro da pasta /video:
-
-    <video autoplay loop playsinline muted preload="auto">
-      <source src="video/hero-fermentou.mp4" type="video/mp4">
-    </video>
-
-    Observação: o atributo "muted" acima é o que deixa o vídeo sem som e,
-    de quebra, é o que garante que o autoplay funcione em todos os
-    navegadores (Chrome, Safari, Firefox só permitem autoplay automático
-    quando o vídeo está mudo). Se quiser o vídeo COM som, vai precisar de
-    um clique do usuário para ativar (ex.: um botão de "ativar som") — me
-    avise que eu monto esse botão.
-  -->
   <video autoplay loop playsinline muted preload="auto">
     <source src="video/video-head.mp4" type="video/mp4">
   </video>
-
 </section>
 
-<!-- TRABALHOS — efeito parallax de revelação (prévia com 3, veja a página Trabalhos para os 10) -->
+<!-- TRABALHOS — Redireciona para a página trabalhos.html e abre o modal automático correspondente -->
 <section class="trabalhos">
-  <div class="trabalho-item" data-titulo="Trabalho 01" data-imagem-1="images/trabalho-01-1.jpg" data-texto-1="Texto 1 do projeto Trabalho 01 — edite este atributo (data-texto-1 no HTML) com a informação real." data-imagem-2="images/trabalho-01-2.jpg" data-texto-2="Texto 2 do projeto Trabalho 01 — edite este atributo (data-texto-2 no HTML) com a informação real." data-imagem-3="images/trabalho-01-3.jpg" data-texto-3="Texto 3 do projeto Trabalho 01 — edite este atributo (data-texto-3 no HTML) com a informação real.">
+  <a href="trabalhos.html#trabalho-01" class="trabalho-item">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-01.jpg" alt="Trabalho 01" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 01'}))">
     </div>
@@ -65,8 +49,9 @@
       <span class="trabalho-item__nome-titulo">Trabalho 01</span>
       <span class="trabalho-item__nome-desc"></span>
     </div>
-  </div>
-  <div class="trabalho-item" data-titulo="Trabalho 02" data-imagem-1="images/trabalho-02-1.jpg" data-texto-1="Texto 1 do projeto Trabalho 02 — edite este atributo (data-texto-1 no HTML) com a informação real." data-imagem-2="images/trabalho-02-2.jpg" data-texto-2="Texto 2 do projeto Trabalho 02 — edite este atributo (data-texto-2 no HTML) com a informação real." data-imagem-3="images/trabalho-02-3.jpg" data-texto-3="Texto 3 do projeto Trabalho 02 — edite este atributo (data-texto-3 no HTML) com a informação real.">
+  </a>
+
+  <a href="trabalhos.html#trabalho-02" class="trabalho-item">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-02.jpg" alt="Trabalho 02" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 02'}))">
     </div>
@@ -74,8 +59,9 @@
       <span class="trabalho-item__nome-titulo">Trabalho 02</span>
       <span class="trabalho-item__nome-desc"></span>
     </div>
-  </div>
-  <div class="trabalho-item" data-titulo="Trabalho 03" data-imagem-1="images/trabalho-03-1.jpg" data-texto-1="Texto 1 do projeto Trabalho 03 — edite este atributo (data-texto-1 no HTML) com a informação real." data-imagem-2="images/trabalho-03-2.jpg" data-texto-2="Texto 2 do projeto Trabalho 03 — edite este atributo (data-texto-2 no HTML) com a informação real." data-imagem-3="images/trabalho-03-3.jpg" data-texto-3="Texto 3 do projeto Trabalho 03 — edite este atributo (data-texto-3 no HTML) com a informação real.">
+  </a>
+
+  <a href="trabalhos.html#trabalho-03" class="trabalho-item">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-03.jpg" alt="Trabalho 03" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 03'}))">
     </div>
@@ -83,31 +69,16 @@
       <span class="trabalho-item__nome-titulo">Trabalho 03</span>
       <span class="trabalho-item__nome-desc"></span>
     </div>
-  </div>
+  </a>
 </section>
 
-<!-- ============================================================
-     CTA — "Vamos fazer um diagnóstico?"
-     Tudo aqui é fácil de editar:
-     - Texto de chamada: troque o conteúdo de <span class="cta-diagnostico__texto">
-     - Texto dentro do campo de e-mail: troque o atributo "placeholder" do <input>
-     - Texto do botão: troque o conteúdo de <button>
-     - Cor de fundo: variável --cta-cor-fundo no topo do css/style.css
-       (hoje é o vermelho da marca — var(--terracota))
-     Este formulário está preparado para o Netlify Forms (mesmo esquema da
-     página Contato) — funciona assim que o site for publicado no Netlify.
-     Se quiser usar outro serviço de e-mail/servidor aqui também, é só
-     trocar/remover o atributo data-netlify e ajustar o "action" do form.
-     ============================================================ -->
+<!-- CTA DIAGNÓSTICO -->
 <section class="cta-diagnostico">
   <div class="container cta-diagnostico__conteudo">
     <span class="cta-diagnostico__texto">Vamos fazer um diagnóstico?</span>
 
     <form action="https://formsubmit.co/b506fd0d9becd67e48673a9bc6436c70" method="POST" class="cta-diagnostico__form">
-
-      <!-- Redireciona de volta para a Home -->
       <input type="hidden" name="_next" value="https://fermentou.com.br/">
-
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_subject" value="Novo pedido de Diagnóstico - Home">
       <input type="hidden" name="origem" value="CTA Diagnóstico - Home">
@@ -129,7 +100,6 @@
       <img src="images/cliente-04.png" alt="Cliente 4" onerror="imgFallback(this, 'Cliente 4')">
       <img src="images/cliente-05.png" alt="Cliente 5" onerror="imgFallback(this, 'Cliente 5')">
       <img src="images/cliente-06.png" alt="Cliente 6" onerror="imgFallback(this, 'Cliente 6')">
-
     </div>
   </div>
 </section>
@@ -151,26 +121,6 @@
   </div>
   <p style="margin-top:1.5rem;opacity:.6;">&copy; <span id="ano"></span> Fermentou. Todos os direitos reservados.</p>
 </footer>
-
-<!-- Off-canvas com detalhes do trabalho clicado -->
-<div class="work-backdrop"></div>
-<aside class="work-drawer" aria-hidden="true">
-  <button class="work-drawer__fechar" aria-label="Fechar">&times;</button>
-  <h2 class="work-drawer__titulo"></h2>
-
-  <div class="work-drawer__bloco">
-    <img class="work-drawer__imagem" data-slot="1" src="" alt="" onerror="this.style.display='none'">
-    <p class="work-drawer__texto" data-slot="1"></p>
-  </div>
-  <div class="work-drawer__bloco">
-    <img class="work-drawer__imagem" data-slot="2" src="" alt="" onerror="this.style.display='none'">
-    <p class="work-drawer__texto" data-slot="2"></p>
-  </div>
-  <div class="work-drawer__bloco">
-    <img class="work-drawer__imagem" data-slot="3" src="" alt="" onerror="this.style.display='none'">
-    <p class="work-drawer__texto" data-slot="3"></p>
-  </div>
-</aside>
 
 <script src="js/script.js"></script>
 <script>document.getElementById('ano').textContent = new Date().getFullYear();</script>
