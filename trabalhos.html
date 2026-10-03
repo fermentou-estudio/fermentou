@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,800;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" type="image/png" href="images/logo-fav.png">
+<link rel="icon" type="image/png" href="images/logo-f.png">
 </head>
 <body>
 
@@ -34,7 +34,13 @@
 
 <!-- Os 10 trabalhos com IDs nos itens para acionamento direto do modal via URL -->
 <section class="trabalhos" style="margin-top:0;">
-  <div id="trabalho-01" class="trabalho-item" data-titulo="Trabalho 01" data-descricao="teste teste" data-midia-1="images/trabalho-01.jpg" data-midia-2="images/trabalho-01.jpg" data-midia-3="images/trabalho-01-3.jpg" data-midia-4="" data-midia-5="" data-midia-6="">
+  <div id="trabalho-01" class="trabalho-item" data-titulo="Série de Rótulos Barrel Aged Hankzbier" data-descricao="Nesse projeto, o cliente nos deu a missão de criar o pacote completo: conceito, naming e o visual das garrafas.
+
+  Para traduzir a essência de uma cerveja envelhecida em madeira, ilustramos animais integrados à textura dos próprios barris. E para deixar o visual bem atual e em sintonia com a identidade da cervejaria, apostamos em cores vibrantes.
+
+  No acabamento, usamos papel texturizado no rótulo e fechamento com cera — um detalhe que ajuda na preservação da cerveja e garante aquele toque premium inconfundível.
+
+  O resultado foi um produto sofisticado e marcante, mas com uma pegada super moderna que atraiu um público contemporâneo e conectado com o universo artesanal." data-midia-1="images/trabalho-01.jpg" data-midia-2="images/trab-01.jpg" data-midia-3="images/trab-02.mp4" data-midia-4="images/trab-03.jpg" data-midia-5="" data-midia-6="">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-01.jpg" alt="Trabalho 01" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 01'}))">
     </div>
@@ -258,7 +264,7 @@
     if (EXT_VIDEO.indexOf(ext) !== -1) {
       el = document.createElement('video');
       el.src = caminho;
-      el.controls = true;
+      el.controls = false;
       el.muted = true;          // Mudo para garantir autoplay nos navegadores
       el.loop = true;           // Repetição contínua
       el.playsInline = true;     // Execução inline em telemóveis
