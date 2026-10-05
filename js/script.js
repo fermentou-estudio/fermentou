@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Troque o número no href abaixo pelo WhatsApp real (mesmo formato usado
   // no resto do site: https://wa.me/55DDDNUMERO).
   var whatsFlutuante = document.createElement('a');
-  whatsFlutuante.href = 'https://wa.me/55SEUNUMEROAQUI';
+  whatsFlutuante.href = 'https://wa.me/5521968088070';
   whatsFlutuante.target = '_blank';
   whatsFlutuante.rel = 'noopener';
   whatsFlutuante.className = 'whatsapp-flutuante';

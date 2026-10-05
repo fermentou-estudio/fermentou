@@ -240,7 +240,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(180deg, #0c0c0c 0%, var(--preto) 55%, var(--areia) 100%);
+  background: linear-gradient(180deg, #0c0c0c 0%, var(--preto) 55%, var(--preto) 100%);
 }
 
 .hero-video video {
@@ -249,7 +249,7 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.55;
+  opacity: 0.25;
 }
 
 .hero-video__placeholder-note {
@@ -279,6 +279,98 @@ a { color: inherit; text-decoration: none; }
 .hero-video__logos img {
   filter: grayscale(1) brightness(2);
   margin: 0 auto;
+}
+
+/* ---------- Hero: texto + botão (CTA) sobre o vídeo ----------
+   O .hero-video já é position:relative e ocupa 100vh. A camada abaixo
+   cobre o hero inteiro e o divide em 3 faixas verticais:
+   1ª = respiro (header) | 2ª = texto | 3ª = botão (terço inferior) */
+
+.hero-video__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  justify-items: center;
+  text-align: center;
+  padding: 0 1.25rem;
+  color: var(--creme);
+  pointer-events: none; /* só o botão captura clique */
+}
+
+.hero-video__texto {
+  grid-row: 2;
+  align-self: center;
+  max-width: 900px;
+}
+
+.hero-video__titulo {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  color: var(--creme);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+}
+
+.hero-video__sub {
+  margin: 0.6em 0 0;
+  font-family: var(--fonte-corpo);
+  font-weight: 400;
+  font-size: clamp(0.85rem, 2vw, 1.25rem);
+  line-height: 1.4;
+  color: var(--creme);
+  opacity: 0.92;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+.hero-video__acao {
+  grid-row: 3;
+  align-self: start;
+  padding-top: clamp(0.5rem, 3vw, 2rem);
+}
+
+.hero-video__btn {
+  display: inline-block;
+  pointer-events: auto;
+  padding: 0.85em 2em;
+  background: var(--terracota);
+  color: var(--creme);
+  border: 2px solid var(--terracota);
+  border-radius: 999px;
+  font-family: var(--fonte-corpo);
+  font-weight: 500;
+  font-size: clamp(0.8rem, 1.6vw, 1rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.hero-video__btn:hover,
+.hero-video__btn:focus-visible {
+  background: var(--creme);
+  color: var(--terracota);
+  border-color: var(--creme);
+  transform: translateY(-2px);
+}
+
+.hero-video__btn:focus-visible {
+  outline: 2px solid var(--areia);
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .hero-video__texto { max-width: 560px; }
+}
+
+@media (max-width: 560px) {
+  .hero-video__overlay { padding: 0 1rem; }
+  .hero-video__titulo { font-size: clamp(1.25rem, 6.5vw, 1.75rem); }
+  .hero-video__sub    { font-size: 0.85rem; margin-top: 0.4em; }
+  .hero-video__btn    { padding: 0.8em 1.6em; font-size: 0.75rem; }
 }
 
 /* ---------- Trabalhos / overlapping parallax images ---------- */
@@ -516,6 +608,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--terracota);
   border: none;
   font-family: var(--fonte-corpo);
+  font-size: 1rem;
   font-weight: 800;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
