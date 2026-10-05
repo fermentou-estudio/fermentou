@@ -603,9 +603,10 @@ a { color: inherit; text-decoration: none; }
   border-radius: 999px;
   /* botão do CTA: fundo bege da marca, texto vermelho em negrito */
   background: var(--areia);
-  color: var(--branco);
+  color: var(--terracota);
   border: none;
   font-family: var(--fonte-corpo);
+  font-size: 1rem;
   font-weight: 800;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
