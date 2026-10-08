@@ -49,7 +49,11 @@
       <span class="trabalho-item__nome-desc"></span>
     </div>
   </div>
-  <div id="trabalho-02" class="trabalho-item" data-titulo="Trabalho 02" data-descricao="Texto de apresentação do projeto Trabalho 02 — edite este atributo (data-descricao no HTML) com a informação real." data-midia-1="images/trabalho-02.jpg" data-midia-2="images/trab_02-01.jpg" data-midia-3="images/trab_02-03.jpg" data-midia-4="images/trab_02-02.jpg" data-midia-5="images/trab_02-04.jpg" data-midia-6="">
+  <div id="trabalho-02" class="trabalho-item" data-titulo="Embalagem Stand Up Pouch Dokie" data-descricao="Para a Dokie, a missão foi além do visual: o cliente precisava de uma consultoria técnica completa.
+
+  A partir da identidade visual da marca, desenvolvemos toda a linha de embalagens. Criamos desde o conceito e os mockups 3D até a parte técnica mais minuciosa — incluindo plantas técnicas e o fechamento final dos arquivos para impressão.
+
+  Entregamos o projeto 100% pronto e alinhado, pronto para ir direto para as prateleiras e conquistar o mercado." data-midia-1="images/trabalho-02.jpg" data-midia-2="images/trab_02-01.jpg" data-midia-3="images/trab_02-03.jpg" data-midia-4="images/trab_02-02.jpg" data-midia-5="images/trab_02-04.jpg" data-midia-6="">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-02.jpg" alt="Trabalho 02" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 02'}))">
     </div>
@@ -58,7 +62,9 @@
       <span class="trabalho-item__nome-desc"></span>
     </div>
   </div>
-  <div id="trabalho-03" class="trabalho-item" data-titulo="Trabalho 03" data-descricao="Texto de apresentação do projeto Trabalho 03 — edite este atributo (data-descricao no HTML) com a informação real." data-midia-1="images/trabalho-03-1.jpg" data-midia-2="images/trabalho-03-2.jpg" data-midia-3="images/trabalho-03-3.jpg" data-midia-4="" data-midia-5="" data-midia-6="">
+  <div id="trabalho-03" class="trabalho-item" data-titulo="Identidade Visual Keil" data-descricao="Para o projeto da cervejaria Keil, desenvolvemos a identidade visual completa da marca, acompanhada de um manual super detalhado para garantir a consistência em cada ponto de contato.
+
+  Criamos uma linha versátil de rótulos adaptada a diferentes tipos de garrafas, além de desdobrar a marca para vestuário, copos e bolachas de chopp. Também projetamos a ambientação do espaço e prestamos assessoria técnica em todo o processo de impressão, garantindo que o resultado final ficasse impecável na prática." data-midia-1="images/trabalho-03.jpg" data-midia-2="images/trab_03_03.jpg" data-midia-3="images/trab_03_02.png" data-midia-4="images/trab_03_01.jpg" data-midia-5="images/trab_03_07.jpg" data-midia-6="images/trab_03_08.jpg" data-midia-7="images/trab_03_06.jpg" data-midia-8="images/trab_03_05.jpg">
     <div class="trabalho-item__frame">
       <img src="images/trabalho-03.jpg" alt="Trabalho 03" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'trabalho-item__placeholder',textContent:'Trabalho 03'}))">
     </div>
@@ -286,9 +292,13 @@
     descEl.textContent = item.dataset.descricao || '';
     galeriaEl.innerHTML = '';
 
-    for (var i = 1; i <= 6; i++) {
+    var i = 1;
+    while (item.hasAttribute('data-midia-' + i)) {
       var caminho = item.getAttribute('data-midia-' + i);
-      if (caminho) galeriaEl.appendChild(criarMidia(caminho));
+      if (caminho) {
+        galeriaEl.appendChild(criarMidia(caminho));
+      }
+      i++;
     }
 
     modal.classList.add('is-aberto');
