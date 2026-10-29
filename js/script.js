@@ -7,6 +7,15 @@
 // Substitui uma imagem que não carregou por um rótulo de texto discreto,
 // evitando o ícone de "imagem quebrada" enquanto os arquivos reais não
 // são enviados pelo usuário.
+
+(function () {
+  var umami = document.createElement('script');
+  umami.defer = true;
+  umami.src = 'https://cloud.umami.is/script.js';
+  umami.setAttribute('data-website-id', '7f531a55-8a51-411d-a5a2-12df48bf1d3e');
+  document.head.appendChild(umami);
+})();
+
 window.imgFallback = function (img, texto) {
   var span = document.createElement('span');
   span.className = 'logo-placeholder';
@@ -275,6 +284,9 @@ document.addEventListener('DOMContentLoaded', function () {
   whatsFlutuante.target = '_blank';
   whatsFlutuante.rel = 'noopener';
   whatsFlutuante.className = 'whatsapp-flutuante';
+  whatsFlutuante.className = 'whatsapp-flutuante';
+  whatsFlutuante.setAttribute('data-umami-event', 'clique-whatsapp-flutuante');
+  whatsFlutuante.setAttribute('aria-label', 'Conversar no WhatsApp');
   whatsFlutuante.setAttribute('aria-label', 'Conversar no WhatsApp');
   whatsFlutuante.innerHTML =
     '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.45 1.33 4.95L2 22l5.24-1.37a9.9 9.9 0 0 0 4.8 1.23h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2h-.01c-1.5 0-2.98-.4-4.27-1.16l-.31-.18-3.18.83.85-3.1-.2-.32a8.2 8.2 0 0 1-1.26-4.31c0-4.53 3.69-8.22 8.23-8.22a8.2 8.2 0 0 1 8.22 8.23c0 4.54-3.69 8.23-8.23 8.23zm4.51-6.16c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.96-.14.16-.29.18-.53.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.14-.24-.02-.38.11-.5.11-.11.25-.28.37-.42.13-.14.17-.24.25-.4.08-.16.04-.3-.02-.42-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02s.87 2.35.99 2.51c.12.16 1.72 2.62 4.16 3.68.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg>';
