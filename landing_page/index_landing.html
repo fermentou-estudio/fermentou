@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fermentou — Diagnóstico gratuito do rótulo da sua cerveja ou kombucha</title>
+  <meta name="description" content="Descubra gratuitamente se o rótulo da sua cerveja artesanal ou kombucha corre risco de multa ou apreensão. Design de embalagem e conformidade regulatória.">
+
+  <!-- Marca que o JavaScript está ativo (sem JS a imagem flutuante fica escondida) -->
+  <script>document.documentElement.classList.add('js');</script>
+
+  <!-- Fontes: Chivo (títulos) e Newsreader (textos) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@700;900&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       1. VARIÁVEIS — é aqui que você ajusta cores, fontes e
+          tamanho da imagem flutuante
+       ========================================================= */
+    :root {
+      /* Paleta */
+      --branco:      #FFFFFF;
+      --cinza-claro: #DCD8D2;  /* fundo cinza */
+      --cinza:       #6B6660;  /* textos secundários */
+      --terracota:   #61210e;  /* vermelho terra cota */
+      --areia:       #E8DCC3;  /* bege areia */
+      --tinta:       #2B2521;  /* cor do texto principal */
+
+      /* Fontes */
+      --fonte-titulo: "Chivo", system-ui, sans-serif;
+      --fonte-texto:  "Chivo", system-ui, sans-serif;
+
+      /* Imagem flutuante: largura responsiva e altura proporcional (1,5x) */
+      --floater-w: clamp(84px, 24vw, 280px);
+      --floater-h: calc(var(--floater-w) * 1.5);
+
+      /* Margem lateral da página e espaçamento vertical das seções.
+         O espaçamento depende da altura da imagem: ele cria o "corredor"
+         por onde a imagem atravessa de um lado para o outro sem tocar no texto. */
+      --gutter: clamp(1.25rem, 4vw, 2.5rem);
+      --pad-sec: max(5rem, calc(var(--floater-h) * 0.6));
+    }
+
+    /* =========================================================
+       2. BASE
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }   /* rolagem suave ao clicar nos botões */
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--fonte-texto);
+      font-size: 1.125rem;
+      line-height: 1.65;
+      color: var(--tinta);
+      background: var(--branco);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--fonte-titulo);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 0 0 1.25rem;
+    }
+    h1 { font-size: clamp(2.1rem, 1.2rem + 3.6vw, 3.9rem); }
+    h2 { font-size: clamp(1.75rem, 1.1rem + 2.2vw, 2.75rem); }
+    p  { margin: 0 0 1.25rem; }
+
+    /* Foco visível para navegação por teclado */
+    :focus-visible { outline: 3px solid var(--terracota); outline-offset: 3px; }
+
+    /* Texto só para leitores de tela */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    /* Contêiner central: todas as seções usam a mesma largura.
+       O JavaScript usa este contêiner para calcular onde a imagem pode ficar. */
+    .wrap {
+      width: min(1200px, calc(100% - 2 * var(--gutter)));
+      margin-inline: auto;
+      position: relative;
+    }
+
+    /* =========================================================
+       3. SEÇÕES + REGRA ANTI-SOBREPOSIÇÃO
+       O atributo data-floater="right|left" em cada seção diz de que lado
+       a IMAGEM fica. O TEXTO vai automaticamente para o lado oposto e
+       tem largura limitada para nunca encostar na imagem.
+       ========================================================= */
+    .sec { position: relative; padding-block: var(--pad-sec); }
+
+    .sec__text {
+      width: min(36rem, calc(100% - var(--floater-w) - 1.5rem));
+    }
+    [data-floater="right"] .sec__text { margin-right: auto; } /* imagem à direita → texto à esquerda */
+    [data-floater="left"]  .sec__text { margin-left: auto;  } /* imagem à esquerda → texto à direita */
+
+    /* =========================================================
+       4. BOTÃO (usado no topo e no formulário)
+       ========================================================= */
+    .btn {
+      display: inline-block;
+      font-family: var(--fonte-titulo);
+      font-weight: 700;
+      font-size: 1.0625rem;
+      color: var(--branco);
+      background: var(--terracota);
+      border: 2px solid var(--terracota);
+      border-radius: 999px;
+      padding: 0.95rem 1.75rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color .2s, color .2s;
+    }
+    .btn:hover { background: var(--tinta); border-color: var(--tinta); }
+
+    /* =========================================================
+       5. SEÇÃO 1 — HEADLINE (fundo areia)
+       ========================================================= */
+    .sec--hero {
+      background: var(--areia);
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 0;
+    }
+    .topo { display: flex; justify-content: flex-end; padding-top: 1.5rem; }
+
+    /* PLACEHOLDER do logo — troque por <img src="img/logo.svg" alt="Fermentou"> */
+    .logo {
+      display: grid; place-items: center;
+      width: 8rem; height: 2.25rem;
+      background: var(--tinta); color: var(--branco);
+      font-family: var(--fonte-titulo); font-weight: 900; font-size: 0.95rem;
+      text-decoration: none;
+    }
+
+    .hero__corpo { flex: 1; display: flex; align-items: center; padding-top: 2rem; }
+    .hero__sub   { font-size: 1.3rem; color: var(--tinta); }
+
+    /* =========================================================
+       6. SEÇÃO 2 — IDENTIFICAÇÃO DO PROBLEMA (fundo terracota)
+       ========================================================= */
+    .sec--problema { background: var(--terracota); color: var(--branco); }
+    .sec--problema h2 { font-size: clamp(1.5rem, 1rem + 1.6vw, 2.1rem); line-height: 1.2; color: var(--areia)}
+
+    .lista { list-style: none; margin: 0 0 1.5rem; padding: 0; }
+    .lista li {
+      position: relative;
+      padding: 0.9rem 0 0.9rem 1.75rem;
+      border-top: 1px solid rgba(255, 255, 255, .35);
+    }
+    .lista li:last-child { border-bottom: 1px solid rgba(255, 255, 255, .35); }
+    .lista li::before {       /* marcador */
+      content: ""; position: absolute; left: 0; top: 1.65rem;
+      width: .6rem; height: .6rem; background: var(--areia);
+    }
+
+    /* =========================================================
+       7. SEÇÃO 3 — COMO FUNCIONA (fundo branco)
+       ========================================================= */
+    .sec--passos { background: var(--areia); }
+
+    .passos { list-style: none; counter-reset: passo; margin: 2rem 0 0; padding: 0; }
+    .passos li {
+      counter-increment: passo;
+      display: grid;
+      grid-template-columns: 3.25rem 1fr;
+      gap: 0 1rem;
+      padding: 1.25rem 0;
+      border-top: 1px solid var(--cinza-claro);
+    }
+    .passos li::before {      /* número do passo */
+      content: counter(passo);
+      grid-row: span 2;
+      font-family: var(--fonte-titulo); font-weight: 900;
+      font-size: 2.75rem; line-height: 1;
+      color: var(--terracota);
+    }
+    .passos h3 { font-size: 1.3rem; margin: 0 0 .25rem; letter-spacing: -0.01em; }
+    .passos p  { margin: 0; color: var(--cinza); }
+
+    /* =========================================================
+       8. SEÇÃO 4 — REFORÇO DE AUTORIDADE (fundo cinza claro)
+       ========================================================= */
+    .sec--autoridade { background: var(--terracota); }
+    .sec--autoridade .destaque { color: var(--areia);
+      font-size: clamp(1.4rem, 1rem + 1.2vw, 1.9rem);
+      line-height: 1.4;
+    }
+    .sec--autoridade .regiao { color: var(--branco); }
+
+    /* =========================================================
+       9. SEÇÃO 5 — FORMULÁRIO (fundo areia)
+       A imagem "pousa" no espaço reservado (#dock), no centro da seção.
+       O formulário vem logo abaixo, então nada sobrepõe a imagem.
+       ========================================================= */
+    .sec--form { background: var(--areia); text-align: center; }
+
+    /* Espaço reservado onde a imagem flutuante termina o percurso */
+    .dock { width: var(--floater-w); height: var(--floater-h); margin: 0 auto 2.5rem; }
+
+    .form { width: min(26rem, 100%); margin: 2rem auto 0; text-align: left; }
+    .campo { margin-bottom: 1.1rem; }
+    .campo label {
+      display: block; margin-bottom: .3rem;
+      font-family: var(--fonte-titulo); font-weight: 700; font-size: .95rem;
+    }
+    .campo input {
+      width: 100%;
+      font: inherit; font-size: 1.05rem;
+      color: var(--tinta);
+      background: var(--branco);
+      border: 2px solid var(--terracota);
+      border-radius: 10px;
+      padding: .75rem .9rem;
+    }
+    .campo input:focus-visible { outline: 3px solid var(--terracota); outline-offset: 2px; border-color: var(--terracota); }
+    .form .btn { width: 100%; margin-top: .5rem; font-size: 1.125rem; }
+
+    /* =========================================================
+       10. SEÇÃO 6 — RODAPÉ (fundo branco)
+       ========================================================= */
+    .rodape { background: var(--tinta); padding-block: 3rem;  font-size: 1rem; color: var(--cinza); }
+    .rodape p { margin: 0; max-width: 40rem;  }
+
+    /* =========================================================
+       10.1 IMAGENS DE FUNDO (OPCIONAIS) — todas as seções e o rodapé
+       Cada seção tem uma camada de fundo própria. Por padrão ela está
+       vazia (a seção usa só a cor sólida). Para ativar, preencha
+       --bg-img com o caminho da imagem na seção desejada.
+
+       Variáveis de cada seção:
+         --bg-img      imagem de fundo:  url('img/arquivo.jpg')  (ou none)
+         --bg-overlay  "véu" de cor por cima da foto, para o texto continuar
+                       legível. Use a cor da seção com transparência.
+         --bg-pos      ponto de foco da imagem: center, top, bottom, left...
+
+       Dica: o véu só faz efeito junto com uma imagem. Se não for usar
+       imagem em uma seção, deixe --bg-img: none e --bg-overlay: transparent.
+       ========================================================= */
+
+    /* Camada de fundo (não precisa mexer aqui) */
+    .sec::before,
+    .rodape::before {
+      content: "";
+      position: absolute; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--bg-overlay, transparent), var(--bg-overlay, transparent)),
+        var(--bg-img, none);
+      background-size: cover;
+      background-position: var(--bg-pos, center);
+      background-repeat: no-repeat;
+    }
+    /* O conteúdo fica sempre acima da camada de fundo */
+    .sec .wrap,
+    .rodape .wrap { z-index: 1; }
+    .rodape { position: relative; }
+
+    /* ---- Configure uma seção por vez (exemplos comentados) ---- */
+
+    /* Seção 1 — Headline */
+    .sec--hero {
+      --bg-img: url('img/fundo-1.jpg');                         /* ex.: url('img/fundo-1.jpg') */
+      --bg-overlay: transparent;              /* ex.: rgba(232, 220, 195, .80) */
+      --bg-pos: center;
+    }
+    /* Seção 2 — Problema */
+    .sec--problema {
+      --bg-img: none;                         /* ex.: url('img/fundo-2.jpg') */
+      --bg-overlay: transparent;              /* ex.: rgba(169, 72, 43, .82) */
+      --bg-pos: center;
+    }
+    /* Seção 3 — Como funciona */
+    .sec--passos {
+      --bg-img: none;                         /* ex.: url('img/fundo-3.jpg') */
+      --bg-overlay: transparent;              /* ex.: rgba(255, 255, 255, .88) */
+      --bg-pos: center;
+    }
+    /* Seção 4 — Autoridade */
+    .sec--autoridade {
+      --bg-img: url('img/fundo-2.jpg');                         /* ex.: url('img/fundo-4.jpg') */
+      --bg-overlay: transparent;              /* ex.: rgba(220, 216, 210, .85) */
+      --bg-pos: center;
+    }
+    /* Seção 5 — Formulário */
+    .sec--form {
+      --bg-img: none;                         /* ex.: url('img/fundo-5.jpg') */
+      --bg-overlay: transparent;              /* ex.: rgba(232, 220, 195, .85) */
+      --bg-pos: center;
+    }
+    /* Seção 6 — Rodapé */
+    .rodape {
+      --bg-img: none;                         /* ex.: url('img/fundo-6.jpg') */
+      --bg-overlay: transparent;              /* ex.: rgba(255, 255, 255, .90) */
+      --bg-pos: center;
+    }
+
+    /* =========================================================
+       11. IMAGEM FLUTUANTE
+       Fica fixa na tela; o JavaScript (no fim do arquivo) a move
+       para a esquerda/direita/centro conforme a rolagem.
+       ========================================================= */
+    .floater {
+      display: none;                     /* só aparece com JavaScript ativo */
+      position: fixed; top: 0; left: 0;
+      width: var(--floater-w); height: var(--floater-h);
+      z-index: 5;
+      pointer-events: none;              /* não atrapalha cliques nos textos */
+      will-change: transform;
+    }
+    .js .floater { display: block; }
+
+    .floater__media {
+      width: 100%; height: 100%;
+      display: grid; place-items: center;
+      background: var(transparent);
+      color: var(--branco);
+      border-radius: calc(var(--floater-w) * 0.3);
+      overflow: hidden;
+      font-family: var(--fonte-titulo); font-weight: 900; font-size: .95rem;
+      text-align: center;
+    }
+    /* Quando você colocar a imagem real, ela preenche todo o espaço */
+    .floater__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================================
+       IMAGEM FLUTUANTE (PLACEHOLDER)
+       Para usar a imagem real:
+       1) apague o texto "img flutuante"
+       2) descomente a linha <img> e coloque o caminho do arquivo
+       ========================================================= -->
+  <div class="floater" id="floater" aria-hidden="true">
+    <div class="floater__media">      
+      <img src="img/imagem-flutuante.png" alt="">
+    </div>
+  </div>
+
+  <main>
+
+    <!-- =======================================================
+         SEÇÃO 1 — HEADLINE
+         data-floater="right" → imagem à direita, texto à esquerda
+         ======================================================= -->
+    <section class="sec sec--hero" data-floater="right">
+      <header class="topo wrap">
+        <!-- Logo (placeholder). Troque pelo arquivo real. -->
+        <a class="logo" href="#" aria-label="Fermentou — início">logo</a>
+      </header>
+
+      <div class="hero__corpo wrap">
+        <div class="sec__text">
+          <h1>Seu rótulo pode estar fora da norma — e você nem sabe disso.</h1>
+          <p class="hero__sub">Descubra gratuitamente se sua cerveja ou kombucha corre risco de multa ou apreensão por erros no rótulo. Design bonito e conformidade legal, juntos — algo raro no mercado.</p>
+          <a class="btn" href="#diagnostico">Quero meu diagnóstico gratuito</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         SEÇÃO 2 — IDENTIFICAÇÃO DO PROBLEMA
+         data-floater="left" → imagem à esquerda, texto à direita
+         ======================================================= -->
+    <section class="sec sec--problema" data-floater="left">
+      <div class="wrap">
+        <div class="sec__text">
+          <h2>Rótulos de cerveja artesanal e kombucha têm, com frequência, falhas graves e passam despercebidas até dar problema:</h2>
+
+          <ul class="lista">
+            <li>Informação nutricional ausente ou incompleta</li>
+            <li>Teor alcoólico não declarado corretamente</li>
+            <li>Alegações proibidas sem registro (como "bebida probiótica")</li>
+            <li>Identificação da cepa de microrganismos ausente (no caso de kombucha)</li>
+          </ul>
+
+          <p>Qualquer uma dessas falhas pode gerar autuação da vigilância sanitária, recolhimento de produto ou até apreensão em fiscalização.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         SEÇÃO 3 — COMO FUNCIONA (3 passos)
+         A imagem continua à esquerda. Para fazê-la voltar ao lado direito
+         aqui, troque para data-floater="right" (o texto muda de lado sozinho).
+         ======================================================= -->
+    <section class="sec sec--passos" data-floater="left">
+      <div class="wrap">
+        <div class="sec__text">
+          <h2>Como funciona</h2>
+
+          <ol class="passos">
+            <li>
+              <h3>Envie uma foto do seu rótulo</h3>
+              <p>Pelo WhatsApp, é rápido e simples.</p>
+            </li>
+            <li>
+              <h3>Nós analisamos</h3>
+              <p>Cruzamos seu rótulo com as exigências da ANVISA e do MAPA.</p>
+            </li>
+            <li>
+              <h3>Você recebe o diagnóstico</h3>
+              <p>Direto no seu WhatsApp, com os pontos de atenção explicados de forma clara.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         SEÇÃO 4 — REFORÇO DE AUTORIDADE
+         ======================================================= -->
+    <section class="sec sec--autoridade" data-floater="left">
+      <div class="wrap">
+        <div class="sec__text">
+          <h2 class="sr-only">Quem é a Fermentou</h2>
+          <p class="destaque">A Fermentou une design de embalagem e consultoria regulatória em um único serviço — uma combinação pouco comum no mercado de pequenos produtores.</p>
+          <p class="regiao">Atuamos com produtores de Minas Gerais, Espírito Santo e Rio de Janeiro.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         SEÇÃO 5 — FORMULÁRIO
+         Sem data-floater: aqui a imagem termina o percurso, centralizada
+         dentro do #dock. O formulário fica abaixo dela.
+         ======================================================= -->
+    <section class="sec sec--form" id="diagnostico">
+      <div class="wrap">
+
+        <!-- Espaço reservado onde a imagem flutuante "pousa" -->
+        <div class="dock" id="dock"></div>
+
+        <h2>Quero meu diagnóstico gratuito</h2>
+
+        <!-- Ao enviar, o JavaScript abre o WhatsApp com a mensagem pronta -->
+        <form class="form" id="form-diagnostico" novalidate>
+          <div class="campo">
+            <label for="nome">Nome</label>
+            <input id="nome" name="nome" type="text" autocomplete="name" required>
+          </div>
+          <div class="campo">
+            <label for="whatsapp">WhatsApp</label>
+            <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="(32) 90000-0000" required>
+          </div>
+          <div class="campo">
+            <label for="negocio">Nome do negócio / @ do Instagram</label>
+            <input id="negocio" name="negocio" type="text" required>
+          </div>
+          <div class="campo">
+            <label for="cidade">Cidade</label>
+            <input id="cidade" name="cidade" type="text" autocomplete="address-level2" required>
+          </div>
+
+          <button class="btn" type="submit">Quero meu diagnóstico gratuito</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =======================================================
+       SEÇÃO 6 — RODAPÉ
+       ======================================================= -->
+  <footer class="rodape">
+    <div class="wrap">
+      <p>Fermentou — Design de embalagem e conformidade regulatória para produtores de alimentos e bebidas. Atendemos Zona da Mata Mineira, Espírito Santo e Rio de Janeiro.</p>
+    </div>
+  </footer>
+
+
+  <script>
+    /* =========================================================
+       CONFIGURAÇÃO — edite aqui
+       ========================================================= */
+
+    // Número do WhatsApp que recebe os diagnósticos.
+    // Formato: código do país + DDD + número, só dígitos. Ex.: "5532900000000"
+    const WHATSAPP_NUMERO = "55XXXXXXXXXXX";
+
+    /* ---------------------------------------------------------
+       VELOCIDADE DA IMAGEM FLUTUANTE — ajuste os 3 valores abaixo
+       --------------------------------------------------------- */
+
+    // SUAVIDADE — "atraso" com que a imagem acompanha a rolagem.
+    //   1    = cola na rolagem, sem atraso (movimento seco)
+    //   0.15 = leve flutuação (padrão)
+    //   0.06 = bem lenta e "pesada", demora para alcançar
+    // Quanto menor, mais a imagem demora para chegar ao destino.
+    const SUAVIDADE = 0.15;
+
+    // PARALAXE_VERTICAL — velocidade com que a imagem sobe enquanto você rola.
+    //   0    = fica parada na altura da tela (padrão)
+    //   0.2  = vai subindo devagar, mais lenta que o texto
+    //   0.5  = sobe na metade da velocidade do texto
+    // Aceita de 0 a 0.7. Ela continua pousando no centro da seção 5.
+    const PARALAXE_VERTICAL = 0;
+
+    // TRAVESSIA — o quanto da área vazia entre dois textos a imagem usa
+    // para trocar de lado (e para descer até o formulário).
+    //   1    = usa toda a área (movimento mais longo e suave, padrão)
+    //   0.5  = metade da área (troca de lado mais rápida)
+    //   0.25 = bem rápida
+    // Aceita de 0.1 a 1. Nunca passa de 1, para não encostar no texto.
+    const TRAVESSIA = 0.8;
+
+    // Mensagem pré-preenchida (os dados do formulário entram automaticamente)
+    function montarMensagem(d) {
+      return [
+        "Olá! Quero meu diagnóstico gratuito do rótulo.",
+        "",
+        "Nome: " + d.nome,
+        "WhatsApp: " + d.whatsapp,
+        "Negócio / Instagram: " + d.negocio,
+        "Cidade: " + d.cidade,
+        "",
+        "Vou enviar a foto do rótulo em seguida."
+      ].join("\n");
+    }
+
+    /* =========================================================
+       FORMULÁRIO → WHATSAPP
+       ========================================================= */
+    const form = document.getElementById("form-diagnostico");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Validação simples: se faltar campo, o navegador destaca o primeiro vazio
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const dados = Object.fromEntries(new FormData(form).entries());
+      const url = "https://wa.me/" + WHATSAPP_NUMERO +
+                  "?text=" + encodeURIComponent(montarMensagem(dados));
+
+      window.location.href = url;   // redireciona para o WhatsApp
+    });
+
+    /* =========================================================
+       IMAGEM FLUTUANTE
+       Como funciona:
+       - A imagem é "fixed" e fica sempre no meio da altura da tela.
+       - Cada seção com data-floater diz de que lado ela fica.
+       - Quando o lado muda entre duas seções, a imagem atravessa só
+         enquanto está no espaço vazio ENTRE os dois textos (o cálculo
+         usa a posição real dos textos, então não sobrepõe nada).
+       - Na seção 5 ela desce até o #dock e passa a rolar junto com a página.
+       ========================================================= */
+    (function () {
+      const floater = document.getElementById("floater");
+      const dock    = document.getElementById("dock");
+      const secoes  = Array.from(document.querySelectorAll(".sec[data-floater]"));
+      const reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // Valores da configuração, protegidos contra números fora do limite
+      const SUAV = Math.min(1, Math.max(0.02, SUAVIDADE));
+      const PARAL = Math.min(0.7, Math.max(0, PARALAXE_VERTICAL));
+      const TRAV = Math.min(1, Math.max(0.1, TRAVESSIA));
+
+      let M = null; // medidas da página (recalculadas quando a tela muda)
+
+      /* Mede posições da página. Roda no carregamento e ao redimensionar. */
+      function medir() {
+        const sy = window.scrollY;
+        const w = floater.offsetWidth;
+        const h = floater.offsetHeight;
+
+        // Posições horizontais possíveis (esquerda, direita e centro do contêiner)
+        const c = secoes[0].querySelector(".wrap").getBoundingClientRect();
+        const xs = {
+          left:   c.left,
+          right:  c.right - w,
+          center: c.left + (c.width - w) / 2
+        };
+
+        // Onde cada bloco de texto começa e termina (coordenadas da página)
+        const textos = secoes.map(function (s) {
+          const r = s.querySelector(".sec__text").getBoundingClientRect();
+          return { top: r.top + sy, bottom: r.bottom + sy };
+        });
+        const lados = secoes.map(function (s) { return s.dataset.floater; });
+
+        // Centro vertical do #dock (onde a imagem pousa)
+        const D = dock.getBoundingClientRect().top + sy + h / 2;
+
+        // Lista de "travessias": faixa de rolagem em que a imagem muda de lado
+        const trans = [];
+        for (let i = 0; i < lados.length - 1; i++) {
+          if (lados[i] === lados[i + 1]) continue;       // mesmo lado: não se move
+          let ini = textos[i].bottom + h / 2;            // topo da imagem passou do texto de cima
+          let fim = textos[i + 1].top - h / 2;           // base da imagem ainda antes do próximo texto
+          if (fim <= ini) {                              // espaço apertado: travessia curta no meio
+            const m = (textos[i].bottom + textos[i + 1].top) / 2;
+            ini = m - 20; fim = m + 20;
+          }
+          // TRAVESSIA: usa só uma parte da área vazia, centralizada
+          const meio = (ini + fim) / 2, meia = ((fim - ini) / 2) * TRAV;
+          trans.push({ ini: meio - meia, fim: meio + meia, de: xs[lados[i]], para: xs[lados[i + 1]] });
+        }
+
+        // Última travessia: do lado atual até o centro (seção 5)
+        const u = textos.length - 1;
+        const iniF = textos[u].bottom + h / 2;
+        const fimF = Math.max(D, iniF + 60);   // termina exatamente quando pousa no #dock
+        trans.push({ ini: fimF - (fimF - iniF) * TRAV, fim: fimF, de: xs[lados[u]], para: xs.center });
+
+        M = { xs: xs, lados: lados, trans: trans, D: D, h: h };
+      }
+
+      /* Animação com suavidade: a imagem "persegue" a posição de destino.
+         O quanto ela atrasa é controlado por SUAVIDADE (no topo do script). */
+      const alvo = { x: 0, y: 0 };
+      const atual = { x: null, y: null };
+      let rodando = false;
+
+      function animar() {
+        if (atual.x === null || SUAV >= 1 || reduzMovimento) {
+          atual.x = alvo.x; atual.y = alvo.y;                // sem atraso
+        } else {
+          atual.x += (alvo.x - atual.x) * SUAV;
+          atual.y += (alvo.y - atual.y) * SUAV;
+        }
+        floater.style.transform = "translate3d(" + atual.x + "px," + atual.y + "px,0)";
+
+        if (Math.abs(alvo.x - atual.x) > 0.1 || Math.abs(alvo.y - atual.y) > 0.1) {
+          requestAnimationFrame(animar);                     // ainda não chegou
+        } else {
+          rodando = false;
+        }
+      }
+
+      /* Calcula o destino da imagem de acordo com a rolagem atual. */
+      function atualizar() {
+        if (!M) return;
+        // Centro da imagem (coord. da página). Com PARALAXE_VERTICAL = 0 ele fica
+        // sempre no meio da tela; com valores maiores a imagem sobe devagar.
+        const yc = (1 - PARAL) * window.scrollY + window.innerHeight / 2;
+
+        // Posição horizontal
+        let x = M.xs[M.lados[0]];
+        for (let i = 0; i < M.trans.length; i++) {
+          const t = M.trans[i];
+          if (yc <= t.ini) { x = t.de; break; }
+          if (yc >= t.fim) { x = t.para; continue; }
+          const p = (yc - t.ini) / (t.fim - t.ini);
+          const suave = reduzMovimento ? (p < 0.5 ? 0 : 1) : p * p * (3 - 2 * p);
+          x = t.de + (t.para - t.de) * suave;
+          break;
+        }
+
+        // Posição vertical: fixa no meio da tela até pousar no #dock; depois rola com a página
+        const yDoc = Math.min(yc, M.D);
+        const y = yDoc - window.scrollY - M.h / 2;
+
+        // Define o destino; a função animar() leva a imagem até ele com a suavidade escolhida
+        alvo.x = x; alvo.y = y;
+        if (!rodando) { rodando = true; requestAnimationFrame(animar); }
+      }
+
+      /* Eventos */
+      let aguardando = false;
+      window.addEventListener("scroll", function () {
+        if (aguardando) return;
+        aguardando = true;
+        requestAnimationFrame(function () { atualizar(); aguardando = false; });
+      }, { passive: true });
+
+      function refazer() { medir(); atualizar(); }
+      window.addEventListener("resize", refazer);
+      window.addEventListener("load", refazer);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(refazer);
+      if (window.ResizeObserver) new ResizeObserver(refazer).observe(document.body);
+
+      refazer();
+    })();
+  </script>
+</body>
+</html>
